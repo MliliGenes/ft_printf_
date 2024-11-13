@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 04:07:40 by sel-mlil          #+#    #+#             */
-/*   Updated: 2024/11/12 23:44:13 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:06:03 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 typedef struct s_function_entry
 {
@@ -22,6 +23,7 @@ typedef struct s_function_entry
 	int						(*function)(va_list args);
 	struct s_function_entry	*next;
 }							t_function_entry;
+
 t_function_entry			*new_node(char flag, int (*function)(va_list));
 void						add_back(t_function_entry **lst,
 								t_function_entry *new_node);
