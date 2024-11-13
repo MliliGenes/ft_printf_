@@ -6,13 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 00:31:21 by sel-mlil          #+#    #+#             */
-/*   Updated: 2024/11/13 03:05:56 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:49:05 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-static int	handle_format_specifier(const char *format, int *i, va_list args,
+static int	handle_format_specifier(char c, va_list args,
 		t_function_entry *head)
 {
 	t_function_entry	*temp;
@@ -20,17 +20,16 @@ static int	handle_format_specifier(const char *format, int *i, va_list args,
 
 	temp = head;
 	count = 0;
-	(*i)++;
 	while (temp)
 	{
-		if (format[*i] == temp->flag)
+		if (c == temp->flag)
 		{
 			count += temp->function(args);
 			break ;
 		}
 		temp = temp->next;
 	}
-	if (!temp && format[*i] == '%')
+	if (!temp && c == '%')
 	{
 		put_char('%');
 		count++;
@@ -48,9 +47,9 @@ static int	process_format(const char *format, va_list args,
 	count = 0;
 	while (format[i])
 	{
-		if (format[i] == '%')
-			count += handle_format_specifier(format, &i, args, head);
-		else
+		if (format[i] == '%' && format[i + 1])
+			count += handle_format_specifier(format[++i], args, head);
+		else if (format[i] != '%')
 		{
 			put_char(format[i]);
 			count++;
@@ -69,8 +68,6 @@ int	ft_printf(const char *format, ...)
 	if (!format || write(1, NULL, 0) == -1)
 		return (-1);
 	head = init_functions();
-	if (!head)
-		return (-1);
 	va_start(args, format);
 	count = process_format(format, args, head);
 	free_list(head);
