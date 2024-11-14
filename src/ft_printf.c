@@ -6,13 +6,13 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 00:31:21 by sel-mlil          #+#    #+#             */
-/*   Updated: 2024/11/13 13:49:05 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:47:29 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-static int	handle_format_specifier(char c, va_list args,
+static int	handle_format_specifier(const char c, va_list args,
 		t_function_entry *head)
 {
 	t_function_entry	*temp;
@@ -29,9 +29,12 @@ static int	handle_format_specifier(char c, va_list args,
 		}
 		temp = temp->next;
 	}
-	if (!temp && c == '%')
+	if (!temp)
 	{
-		put_char('%');
+		if (c == '%')
+			put_char('%');
+		else
+			put_char(c);
 		count++;
 	}
 	return (count);
